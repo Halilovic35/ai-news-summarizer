@@ -127,16 +127,16 @@ function App() {
     setCopySuccess('')
 
     try {
-      const response = await fetch('http://localhost:5000/summarize', {
+      const response = await fetch('https://ai-news-summarizer-production.up.railway.app/summarize', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           url,
           language,
-          summaryLength 
-        }),
+          length: summaryLength
+        })
       })
 
       const data = await response.json()
