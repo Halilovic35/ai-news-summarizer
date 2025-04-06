@@ -19,11 +19,25 @@ const port = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Serve favicon.ico
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).end(); // Return "No Content" status if favicon doesn't exist
+});
+
 // Initialize OpenAI
+const apiKey = process.env.OPENAI_API_KEY?.replace(/^Bearer\s+/i, '').trim();
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: apiKey,
+  baseURL: 'https://api.openai.com/v1',
+  defaultQuery: undefined,
+  defaultHeaders: {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  }
 });
 
 // Language prompts
